@@ -14,10 +14,10 @@ $baseClass->setXYPaths(5,5);
 
     try {
         $baseClass->executeInput('examples/example-c.txt');
-        echo $baseClass->reportRobot();
+        echo $baseClass->reportRobot() . "\n";
     }
     catch (\Exception $e)
     {
-        print_r($e);
+        print_r($e->getMessage());
     }
 

@@ -66,6 +66,11 @@ class ToyRobotBoard
      */
     public function executeInput($source)
     {
+        if (!file_exists($source))
+        {
+            throw new Exception($this->errorsList() ['file']);
+        }
+
         $handle = fopen($source, 'r');
 
         while ($line = fgets($handle)) {
@@ -80,6 +85,7 @@ class ToyRobotBoard
         }
 
         fclose($handle);
+
     }
 
     /**
@@ -92,13 +98,13 @@ class ToyRobotBoard
             $this->isBoardInitialised();
         }
 
-        $getXPosition = explode(' ', $inputLineToArray[0]);
+        $getXPositionArray = explode(' ', $inputLineToArray[0]);
 
-        if (!empty($getXPosition) && count($getXPosition) == 2) {
-            if ($getXPosition[0] == trim($this->allowedCommands() [0])
-                && is_integer((int)$getXPosition[1])
+        if (!empty($getXPositionArray) && count($getXPositionArray) == 2) {
+            if ($getXPositionArray[0] == trim($this->allowedCommands() [0])
+                && is_integer((int)$getXPositionArray[1])
                 && is_integer((int)$inputLineToArray[1])) {
-                $this->xOutput = $getXPosition[1];
+                $this->xOutput = $getXPositionArray[1];
                 $this->yOutput = $inputLineToArray[1];
                 $this->directionOutput = trim($inputLineToArray[2]);
 
@@ -136,7 +142,8 @@ class ToyRobotBoard
     {
         return [
             'init' => "Board is not initialised",
-            'command' => "Not a valid command"
+            'command' => "Not a valid command",
+            'file' => "Can't read or open your input file"
         ];
     }
 
